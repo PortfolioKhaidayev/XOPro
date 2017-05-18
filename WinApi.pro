@@ -3,6 +3,8 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+TARGET = xo_project
+
 MODULES += ui
 
 LIBS += -lgdi32 # Пока нигде, но понадобится для картинок
@@ -79,7 +81,9 @@ HEADERS += \
     wwin/wpaintdevice.h \
     wwin/wpainter.h \
     wwin/wpaintevent.h \
-    wwin/wrect.h
+    wwin/wrect.h \
+    xowindow.h \
+    xofield.h
 
 SOURCES += main.cpp\
     wwin/wapplication.cpp \
@@ -101,4 +105,6 @@ SOURCES += main.cpp\
     wwin/wpaintdevice.cpp \
     wwin/wpainter.cpp \
     wwin/wpaintevent.cpp \
-    wwin/wrect.cpp
+    wwin/wrect.cpp \
+    xowindow.cpp \
+    xofield.cpp
