@@ -111,7 +111,7 @@ XOShape::XOShape(WObject parent)
 {
 }
 
-XOShape::XOShape(WPoint pivotPoint, WSize _size, WPivotPointPosition pivotPointType)
+XOShape::XOShape(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType)
 {
   this->setGiometry(pivotPoint, size, pivotPointType);
 }
@@ -132,8 +132,8 @@ void XOShape::setGiometry(WPivotPointPosition pivotPointType)
   this->initGiometry();
 }
 
-void XOShape::draw(WPoint pos)
+void XOShape::draw(HDC hdc, WPoint pos)
 {
   this->pivotPonit( pos );
-  this->draw();
+  this->draw(hdc);
 }

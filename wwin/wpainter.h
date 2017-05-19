@@ -20,6 +20,7 @@ public:
   void begin(WPaintDevice *device);
   void end();
 
+//  void drawShap()
   void drawLine(int beginX, int beginY, int endX, int endY);
   void drawRect(int leftX, int topY, int width, int height);
   void drawElipce(int leftX, int topY, int width, int height);

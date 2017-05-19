@@ -84,7 +84,9 @@ HEADERS += \
     wwin/wrect.h \
     xowindow.h \
     xofield.h \
-    xoshape.h
+    xoshape.h \
+    xorectangle.h \
+    xoellipse.h
 
 SOURCES += main.cpp\
     wwin/wapplication.cpp \
@@ -109,4 +111,6 @@ SOURCES += main.cpp\
     wwin/wrect.cpp \
     xowindow.cpp \
     xofield.cpp \
-    xoshape.cpp
+    xoshape.cpp \
+    xorectangle.cpp \
+    xoellipse.cpp
