@@ -10,7 +10,8 @@
 namespace WObjectType {
     enum WObjectType{
         Object,
-        Widget
+        Widget,
+        Shape
     };
 }
 

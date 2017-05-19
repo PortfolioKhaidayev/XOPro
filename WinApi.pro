@@ -83,7 +83,8 @@ HEADERS += \
     wwin/wpaintevent.h \
     wwin/wrect.h \
     xowindow.h \
-    xofield.h
+    xofield.h \
+    xoshape.h
 
 SOURCES += main.cpp\
     wwin/wapplication.cpp \
@@ -107,4 +108,5 @@ SOURCES += main.cpp\
     wwin/wpaintevent.cpp \
     wwin/wrect.cpp \
     xowindow.cpp \
-    xofield.cpp
+    xofield.cpp \
+    xoshape.cpp
