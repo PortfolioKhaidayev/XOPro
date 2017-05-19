@@ -1,36 +1,36 @@
-#include "xoshape.h"
+#include "wshape.h"
 
-WPoint XOShape::pivotPonit() const
+WPoint WShape::pivotPonit() const
 {
   return _pivotPonit;
 }
 
-void XOShape::setPivotPonit(const WPoint &pivotPonit)
+void WShape::pivotPonit(const WPoint &pivotPonit)
 {
   _pivotPonit = pivotPonit;
 }
 
-WPoint XOShape::leftTopVertex() const
+WPoint WShape::leftTopVertex() const
 {
   return _leftTopVertex;
 }
 
-WPoint XOShape::rightBotVertex() const
+WPoint WShape::rightBotVertex() const
 {
   return _rightBotVertex;
 }
 
-WSize XOShape::size() const
+WSize WShape::size() const
 {
   return _size;
 }
 
-void XOShape::setSize(const WSize &size)
+void WShape::size(const WSize &size)
 {
   _size = size;
 }
 
-void XOShape::initGiometry()
+void WShape::initGiometry()
 {
 
   int centerX = ( _size.width()/2 );
@@ -101,38 +101,28 @@ void XOShape::initGiometry()
   }
 }
 
-XOShape::XOShape()
-  : setType( WObjectType::Shape )
+WShape::WShape(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType)
 {
+  this->setGeometry(pivotPoint, size, pivotPointType);
 }
 
-XOShape::XOShape(WObject parent)
-  :WObject( parent ), setType( WObjectType::Shape )
+void WShape::setGeometry(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType)
 {
-}
-
-XOShape::XOShape(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType)
-{
-  this->setGiometry(pivotPoint, size, pivotPointType);
-}
-
-void XOShape::setGiometry(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType)
-{
-  _pivotPonit =  pivotPoint;
+  _pivotPonit = pivotPoint;
   _size = size;
   _pivotType = pivotPointType;
 
   this->initGiometry();
 }
 
-void XOShape::setGiometry(WPivotPointPosition pivotPointType)
+void WShape::setGeometry(WPivotPointPosition pivotPointType)
 {
   _pivotType = pivotPointType;
 
   this->initGiometry();
 }
 
-void XOShape::draw(HDC hdc, WPoint pos)
+void WShape::draw(HDC &hdc, WPoint pos)
 {
   this->pivotPonit( pos );
   this->draw(hdc);

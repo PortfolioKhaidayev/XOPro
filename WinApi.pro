@@ -82,11 +82,13 @@ HEADERS += \
     wwin/wpainter.h \
     wwin/wpaintevent.h \
     wwin/wrect.h \
+############################
+    wwin/wellipse.h \
+    wwin/wrectangle.h \
+    wwin/wshape.h \
+###########################
     xowindow.h \
-    xofield.h \
-    xoshape.h \
-    xorectangle.h \
-    xoellipse.h
+    xofield.h
 
 SOURCES += main.cpp\
     wwin/wapplication.cpp \
@@ -109,8 +111,10 @@ SOURCES += main.cpp\
     wwin/wpainter.cpp \
     wwin/wpaintevent.cpp \
     wwin/wrect.cpp \
+#####################################
+    wwin/wellipse.cpp \
+    wwin/wrectangle.cpp \
+    wwin/wshape.cpp \
+###############################
     xowindow.cpp \
-    xofield.cpp \
-    xoshape.cpp \
-    xorectangle.cpp \
-    xoellipse.cpp
+    xofield.cpp

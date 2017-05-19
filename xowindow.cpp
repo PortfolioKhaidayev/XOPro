@@ -1,8 +1,12 @@
 #include "xowindow.h"
-#include <WGui>
 #include "xofield.h"
 
+#include <WGui>
+#include <wpainter.h>
+
+
 #include <iostream>
+
 
 XOWindow::XOWindow(WWidget *parent)
   :WWidget(parent)
@@ -56,11 +60,20 @@ void XOWindow::initUi()
   btnExit->setGeometry(10, 200, 340, 30);
   btnExit->setTitle(L"Exit");
   btnExit->show();
-
+////////////////  67a9ee7bd32e551  :: create [XO] Ellipse, Rectangle
+///
+///  8319569079b6 :: Created XOField, XOWindow
   XOField *fld = new XOField(this);
   fld->setGeometry( 350, 10, 300, 300);
   fld->show();
+/*/////////////////////////
+  WPainter* painter = new WPainter( fld );
 
+  painter->begin();
+  painter->drawShape( WEllipse( WPoint( 150, 150), 150 ) );
+  //painter->drawEllipse(Wrect);
+  painter->end();
+///////////////////////*/
   /// game`s main menu
   ///   Size: [___]
   ///   ( )Easy ( )Normal ( )Hard

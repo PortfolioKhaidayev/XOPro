@@ -5,7 +5,7 @@ WPaintDevice *WPainter::device() const
   return _device;
 }
 
-void WPainter::setDevice(WPaintDevice *device)
+void WPainter::setDevice(WPaintDevice* device)
 {
   _device = device;
 }
@@ -15,7 +15,7 @@ WPainter::WPainter()
 
 }
 
-WPainter::WPainter(WPaintDevice *device)
+WPainter::WPainter(WPaintDevice* device)
 {
   _device = device;
 
@@ -26,7 +26,7 @@ void WPainter::begin()
   _hdc = BeginPaint(_device->painterHWND(), &_ps);
 }
 
-void WPainter::begin(WPaintDevice *device)
+void WPainter::begin(WPaintDevice* device)
 {
   this->setDevice(device);
   this->begin();
@@ -35,6 +35,11 @@ void WPainter::begin(WPaintDevice *device)
 void WPainter::end()
 {
   EndPaint(_device->painterHWND(), &_ps);
+}
+
+void WPainter::drawShape(WShape shape)
+{
+  shape.draw(_hdc);
 }
 
 void WPainter::drawLine(int beginX, int beginY, int endX, int endY)

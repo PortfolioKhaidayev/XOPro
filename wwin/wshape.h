@@ -17,8 +17,9 @@ enum class WPivotPointPosition{
   RightJustify,
 };
 
-class XOShape : WObject
+class WShape
 {
+protected:
   WPoint _pivotPonit;
   WPivotPointPosition _pivotType;
 
@@ -31,16 +32,14 @@ class XOShape : WObject
   void initGiometry();
 
 public:
-  XOShape();
-  XOShape(WObject parent = nullptr);
-  XOShape(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
+  WShape(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
 
-  virtual void setGiometry();
-  void setGiometry(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
-  void setGiometry(WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
+  virtual void setGeometry();
+  void setGeometry(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
+  void setGeometry(WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
 
-  virtual void draw(HDC hdc);
-  void draw(HDC hdc, WPoint pos);
+  virtual void draw(HDC& hdc);
+  void draw(HDC& hdc, WPoint pos);
 
   WPoint pivotPonit() const;
   void pivotPonit(const WPoint &pivotPonit);

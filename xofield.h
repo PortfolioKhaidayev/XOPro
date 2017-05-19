@@ -6,7 +6,7 @@
 class XOField : public WWidget
 {
 private:
-  XOCell cells;/// : public XOShape
+  ///XOCell cells;/// : public XOShape
     /// x, y of center of cell in field
     /// top, left, bottom, right of this cell IN field
 
