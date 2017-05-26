@@ -127,7 +127,10 @@ public:
     void hwnd(HWND hwnd);
     void show();
 
+    void geometry(int* x, int* y, int* width, int* height) const;
+    WRect geometry() const;
     void setGeometry(int x, int y, int width, int height);
+
     WString title() const;
     void setTitle(const WString &title);
 

@@ -1,5 +1,8 @@
 #include "xowindow.h"
 #include "xofield.h"
+#include "wellipse.h"
+#include "wrectangle.h"
+#include "xogame.h"
 
 #include <WGui>
 #include <wpainter.h>
@@ -14,6 +17,11 @@ XOWindow::XOWindow(WWidget *parent)
 
 }
 
+XOWindow::~XOWindow()
+{
+
+}
+
 void XOWindow::initUi()
 {
   auto wgt = this;
@@ -24,6 +32,8 @@ void XOWindow::initUi()
 
   wgt->setTitle(L"XOPro");
   wgt->setGeometry(x, y, width, height);// piece
+
+
 
 
   WSpinBox* sbSize = new WSpinBox(this);
@@ -60,28 +70,29 @@ void XOWindow::initUi()
   btnExit->setGeometry(10, 200, 340, 30);
   btnExit->setTitle(L"Exit");
   btnExit->show();
-////////////////  67a9ee7bd32e551  :: create [XO] Ellipse, Rectangle
-///
-///  8319569079b6 :: Created XOField, XOWindow
-  XOField *fld = new XOField(this);
-  fld->setGeometry( 350, 10, 300, 300);
-  fld->show();
-/*/////////////////////////
-  WPainter* painter = new WPainter( fld );
+
+  auto *fld = new XOGame(this);
+  fld->setPos( WPoint( 360, 10) );
+  btnStart->on_clicked([=](WMouseEvent*,bool){
+    int sz = sbSize->value();
+    fld->startNewGame( sz );
+  });
+
+}
+
+bool XOWindow::paintEvent(WPaintEvent *e)
+{
+
+  WEllipse el( WPoint( 150, 150), 150 );
+
+  WRectangle rg(WPoint( 360, 10), WSize(300, 300), WPivotPointPosition::LeftTop );
+
+  WPainter* painter = new WPainter( this );
 
   painter->begin();
-  painter->drawShape( WEllipse( WPoint( 150, 150), 150 ) );
-  //painter->drawEllipse(Wrect);
-  painter->end();
-///////////////////////*/
-  /// game`s main menu
-  ///   Size: [___]
-  ///   ( )Easy ( )Normal ( )Hard
-  ///   [Start]
-  ///   [Exit]
 
-  // [x|0|0]
-  // [0|x|x]
-  // [x|0|x]
-  // [ReStart]
+//  painter->drawShape( rg );
+//  painter->drawRect(360, 10, 300, 300);
+
+  painter->end();
 }

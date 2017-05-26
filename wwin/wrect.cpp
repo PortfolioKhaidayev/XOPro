@@ -85,3 +85,16 @@ bool WRect::isNull() const
 }
 
 
+bool WRect::contains(int x, int y, bool proper) const
+{
+    if( proper ) {
+        if( x < this->left() || x > this->right() || y < this->top() || y > this->bottom() ){
+            return false;
+        }
+    } else {
+        if( x <= this->left() || x >= this->right() || y <= this->top() || y >= this->bottom() ){
+            return false;
+        }
+    }
+    return true;
+}

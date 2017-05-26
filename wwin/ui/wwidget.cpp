@@ -153,12 +153,12 @@ bool WWidget::resizeEvent(WResizeEvent *e)
 
 bool WWidget::moveEvent(WMoveEvent *e)
 {
-  return e->isAccepted();
+   return e->isAccepted();
 }
 
 bool WWidget::paintEvent(WPaintEvent *e)
 {
-  return e->isAccepted();
+    return e->isAccepted();
 }
 
 /**
@@ -219,6 +219,21 @@ void WWidget::show()
     }
     ShowWindow( this->hwnd(), _windowParams );
     UpdateWindow( this->hwnd() );
+}
+
+void WWidget::geometry(int *x, int *y, int *width, int *height) const
+{
+    if(!x || !y || !width || !height) return;
+
+    *x = _x;
+    *y = _y;
+    *width  = _width;
+    *height = _height;
+}
+
+WRect WWidget::geometry() const
+{
+    return WRect(_x, _y, _width, _height);
 }
 
 /**
@@ -298,6 +313,7 @@ void WWidget::enable()
  */
 bool WWidget::nativeEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+  WEvent *evt = nullptr;
     if( message == WM_DESTROY ){
         PostQuitMessage( EXIT_SUCCESS );
         return true;
@@ -320,7 +336,7 @@ bool WWidget::nativeEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         WSize newSize(rect.right-rect.left, rect.bottom - rect.top);
 
-        return this->event( new WResizeEvent(newSize, oldSize) );
+        return this->event( evt = new WResizeEvent(newSize, oldSize) );
     }
     if(WM_MOVE == message || WM_MOVING == message){
         WPoint oldPos( _x, _y);
@@ -333,44 +349,52 @@ bool WWidget::nativeEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         WPoint newPos(rect.left, rect.top);
 
-        return this->event( new WMoveEvent(newPos, oldPos) );
+        return this->event( evt = new WMoveEvent(newPos, oldPos) );
     }
     if(WM_PAINT == message) {
         RECT wr;
         GetClientRect(this->hwnd(), &wr);
         WRect r(0, 0, wr.right, wr.bottom);
-        return this->event( new WPaintEvent(r) );
+
+        UpdateWindow(hWnd);
+
+        return this->event( evt = new WPaintEvent(r) );
+    }
+    if(WM_LBUTTONDOWN == message){
+      std::cout << "WWidget:clck" << std::endl;
+        return this->event(evt = new WMouseEvent);
     }
     if(WM_COMMAND == message){
         // Lists
         if(HIWORD(wParam) == LBN_SELCHANGE) {
-            return this->event(new WEvent( WEvent::Type::ChangeEvent ));
+            return this->event( evt = new WEvent( WEvent::Type::ChangeEvent ) );
         }
         if(HIWORD(wParam) == LBN_DBLCLK) {
             WMouseEvent* e = new WMouseEvent;
             e->setType(WEvent::Type::MouseDoubleClickEvent);
-            return this->event(e);
+            return this->event( evt = e);
         }
 
         // Buttons
         if( HIWORD( wParam ) == BN_CLICKED ) {
-            return this->event(new WMouseEvent);
+            return this->event( evt = new WMouseEvent );
         }
         if( HIWORD( wParam ) == BN_PUSHED ) {
             /// \todo fixme Not fire
-            return this->event(new WMouseEvent);
+            return this->event( evt = new WMouseEvent );
         }
         if( HIWORD( wParam ) == BN_UNPUSHED ) {
             /// \todo fixme Not fire
-            return this->event(new WMouseEvent);
+            return this->event( evt = new WMouseEvent );
         }
 
         // Edits
         if( EN_CHANGE == HIWORD(wParam) ){
-            return this->event( new WEvent(WEvent::Type::WindowTitleChange) );
+            return this->event( evt = new WEvent(WEvent::Type::WindowTitleChange) );
         }
     }
 
+    delete evt; evt = nullptr;
     return WObject::nativeEvent(hWnd, message, wParam, lParam);
 }
 

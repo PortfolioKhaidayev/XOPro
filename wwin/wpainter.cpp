@@ -37,7 +37,7 @@ void WPainter::end()
   EndPaint(_device->painterHWND(), &_ps);
 }
 
-void WPainter::drawShape(WShape shape)
+void WPainter::drawShape(WShape &shape)
 {
   shape.draw(_hdc);
 }

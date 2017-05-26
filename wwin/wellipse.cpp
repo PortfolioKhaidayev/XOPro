@@ -19,7 +19,7 @@ WEllipse::WEllipse(WPoint pivotPonit, int radius)
 
 void WEllipse::setGeometry(WPoint pivotPonit, int horisontalRadius, int verticalRadius)
 {
-  setGeometry( pivotPonit,
+  WShape::setGeometry( pivotPonit,
                WSize( horisontalRadius*2, verticalRadius*2),
                WPivotPointPosition::Center);
 }
@@ -27,12 +27,12 @@ void WEllipse::setGeometry(WPoint pivotPonit, int horisontalRadius, int vertical
 void WEllipse::setGeometry(WPoint pivotPonit, int radius)
 
 {
-  setGeometry( pivotPonit,
+  WShape::setGeometry( pivotPonit,
                WSize( radius*2, radius*2),
                WPivotPointPosition::Center);
 }
 
-void WEllipse::draw(HDC& hdc)
+void WEllipse::draw(HDC hdc)
 {
   Ellipse(hdc, _leftTopVertex.x(), _leftTopVertex.y(), _rightBotVertex.x(), _rightBotVertex.y());
 }

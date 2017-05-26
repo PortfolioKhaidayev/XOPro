@@ -19,7 +19,7 @@ public:
   void begin(WPaintDevice* device);
   void end();
 
-  void drawShape(WShape shape);
+  void drawShape(WShape& shape);
   void drawLine(int beginX, int beginY, int endX, int endY);
   void drawRect(int leftX, int topY, int width, int height);
   void drawElipce(int leftX, int topY, int width, int height);

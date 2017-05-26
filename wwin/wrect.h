@@ -35,6 +35,7 @@ public:
 
     int right() const;
     int bottom() const;
+    bool contains(int x, int y, bool proper = false) const;
 };
 
 #endif // WRECT_H

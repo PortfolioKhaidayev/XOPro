@@ -1,18 +1,29 @@
 #ifndef XOFIELD_H
 #define XOFIELD_H
 
-#include <WWidget>
-
+#include <WAbstractButton>
+#include <wpainter.h>
 class XOField : public WWidget
 {
 private:
-  ///XOCell cells;/// : public XOShape
-    /// x, y of center of cell in field
-    /// top, left, bottom, right of this cell IN field
-
+  char** _map = nullptr;
+  int _size = 3;
+  int _tileSize = 32;
 
 public:
   XOField(WWidget *parent = nullptr);
+
+  void startNewGame(int size);
+
+  bool setTile(int i, int j, char tile);
+
+private:
+  void drawGrid(WPainter &p);
+  void drawTiles(WPainter &p);
+
+  void deleteMap();
+  void createMap();
+  void eraseMap(char def = ' ');
 
   // WWidget interface
 protected:

@@ -88,7 +88,8 @@ HEADERS += \
     wwin/wshape.h \
 ###########################
     xowindow.h \
-    xofield.h
+    xofield.h \
+    xogame.h
 
 SOURCES += main.cpp\
     wwin/wapplication.cpp \
@@ -117,4 +118,5 @@ SOURCES += main.cpp\
     wwin/wshape.cpp \
 ###############################
     xowindow.cpp \
-    xofield.cpp
+    xofield.cpp \
+    xogame.cpp

@@ -8,7 +8,7 @@ class WRectangle : public WShape
 public:
   WRectangle(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
 
-  virtual void draw(HDC& hdc) override;
+  virtual void draw(HDC hdc) override;
 };
 
 #endif // XORECTANGLE_H

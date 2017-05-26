@@ -34,12 +34,11 @@ protected:
 public:
   WShape(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
 
-  virtual void setGeometry();
   void setGeometry(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
   void setGeometry(WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
 
-  virtual void draw(HDC& hdc);
-  void draw(HDC& hdc, WPoint pos);
+  virtual void draw(HDC hdc);
+  void draw(HDC hdc, WPoint pos);
 
   WPoint pivotPonit() const;
   void pivotPonit(const WPoint &pivotPonit);

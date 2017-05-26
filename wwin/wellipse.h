@@ -6,7 +6,7 @@
 class WEllipse : public WShape
 {
 public:
- // WEllipse();
+  WEllipse();
   WEllipse(WPoint pivotPoint, WSize size, WPivotPointPosition pivotPointType = WPivotPointPosition::Center);
   WEllipse(WPoint pivotPonit, int horisontalRadius, int verticalRadius);
   WEllipse(WPoint pivotPonit, int radius);
@@ -14,7 +14,7 @@ public:
   void setGeometry(WPoint pivotPonit, int horisontalRadius, int verticalRadius);
   void setGeometry(WPoint pivotPonit, int radius);
 
-  virtual void draw(HDC& hdc) override;
+  void draw(HDC hdc) override;
 };
 
 #endif // XOELIPCE_H
