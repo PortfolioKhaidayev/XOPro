@@ -2,9 +2,6 @@
 #include "xogame.h"
 
 #include <WGui>
-//#include <WPainter>
-
-
 #include <iostream>
 
 /// \bref
@@ -47,6 +44,20 @@ void XOWindow::initUi()
   sbSize->setValue(3);
   sbSize->show();
 
+  WRadioButton* rbOnePlayer = new WRadioButton(wgt);
+  rbOnePlayer.setGeometry( 10, sbSize->geometry().bottom() + 10, 150, 30 );
+  rbOnePlayer.setTitle(L"One");
+  rbOnePlayer.setChecked(true);
+  WRadioButton* rbTwoPlayers = new WRadioButton(wgt);
+  rbTwoPlayers.setGeometry( rbOnePlayer.geometry().bottomRight().x() + 10, sbSize->geometry().bottom() + 10, 150, 30 );
+  rbTwoPlayers.setTitle(L"Two");
+  rbTwoPlayers.setChecked(false);
+
+  WButtonGroup bgMode = new WButtonGroup(wgt);
+  bgMode.addButton(rbOnePlayer);
+  bgMode.addButton(rbTwoPlayers);
+
+
   WPushButton* btnStart = new WPushButton(this);
   btnStart->setGeometry(10, 160, 340, 30);
   btnStart->setTitle(L"Start");
@@ -62,7 +73,7 @@ void XOWindow::initUi()
                    );
 
   auto *fld = new XOGame(this);
-  fld->setPos( WPoint( 10, sbSize->geometry().bottom() + 10) );
+  fld->setPos( WPoint( 10, rbOnePlayer->geometry().bottom() + 10) );
 //  fld->setPos( WPoint( btnExit->geometry().right() / 3, sbSize->geometry().bottom() + 10) );
   fld->startNewGame( fld->getSize() );
 
@@ -71,7 +82,7 @@ void XOWindow::initUi()
     int sz = sbSize->value();
     fld->startNewGame( sz );
 
-    fld->setPos( WPoint( width / 2 - (fld->geometry().right())/2, sbSize->geometry().bottom() + 10) );
+//    fld->setPos( WPoint( width / 2 - (fld->geometry().right())/2, sbSize->geometry().bottom() + 10) );
     btnStart->setGeometry( 10, fld->geometry().bottom(), 340, 30);
     btnExit->setGeometry( 10, btnStart->geometry().bottom()+16, 340, 30);
 
@@ -79,8 +90,6 @@ void XOWindow::initUi()
                      btnExit->geometry().right()+30,
                      btnExit->geometry().bottom()+50
                      );
-
-//    this->hideUi();
   });
 
   btnExit->on_clicked([=](WMouseEvent*, bool){
