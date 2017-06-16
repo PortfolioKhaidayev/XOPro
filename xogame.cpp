@@ -1,6 +1,9 @@
 #include "xogame.h"
 #include <vector>
 #include <iostream>
+#include <WMessageBox>
+
+int XOGame::countFigure = 0;
 
 MapItem **XOGame::map() const
 {
@@ -19,8 +22,8 @@ void XOGame::initAi(char aiPlayer)
   }
 }
 
-AiMove XOGame::getBestMove(char currentPlayer)
-{
+AiMove XOGame::getBestMove(char currentPlayer, int depth)
+{  
   char rv = this->checkVictory();
   if( rv == _aiPlayer ){
     return AiMove(10);
@@ -28,6 +31,16 @@ AiMove XOGame::getBestMove(char currentPlayer)
     return AiMove(-10);
   }else if( rv == -1){
     return AiMove(0);
+  }
+
+  if( depth <= 0 ){
+    if( rv == _aiPlayer ){
+      return AiMove(10);
+    }else if ( rv == _huPlayer ) {
+      return AiMove(-10);
+    }else if( rv == -1){
+      return AiMove(0);
+    }
   }
 
   std::vector<AiMove> moves;
@@ -40,9 +53,9 @@ AiMove XOGame::getBestMove(char currentPlayer)
         move._y = j;
         _map[i][j].symbol = currentPlayer;
         if ( currentPlayer == _aiPlayer ) {
-          move._score = getBestMove(_huPlayer)._score;
+          move._score = getBestMove(_huPlayer, depth--)._score;
         } else {
-          move._score = getBestMove(_aiPlayer)._score;
+          move._score = getBestMove(_aiPlayer, depth--)._score;
         }
         moves.push_back(move);
         _map[i][j].symbol = _;
@@ -81,27 +94,71 @@ AiMove XOGame::getBestMove(char currentPlayer)
 
 void XOGame::run_minimax()
 {
-  AiMove move = getBestMove();
-  this->setTile( move._x, move._y, O);
+  checkGameOver();
+
+  AiMove move = getBestMove(_aiPlayer, 3);
+  this->setTile( move._x, move._y, _aiPlayer);
+
+  checkGameOver();
 }
 
-void XOGame::eraseMap(char def)
+void XOGame::eraseMap()
 {
   if( ! _map ) return;
 
   for (int i = 0; i < _size; ++i) {
     for (int j = 0; j < _size; ++j) {
-//      if(def == ' ' || def == 'O' || def == 'X'){
-        _map[i][j].btn->setTitle(L" ");
-        _map[i][j].symbol = def;
-//      }
+      //      if(def == ' ' || def == 'O' || def == 'X'){
+      _map[i][j].btn->setTitle(L" ");
+      _map[i][j].symbol = _;
+      //      }
     }
   }
+}
+
+int XOGame::getCountFigure()
+{
+  return countFigure;
+}
+
+int XOGame::incrementCountFigure()
+{
+  return countFigure++;
+}
+
+void XOGame::setCountFigure(int value)
+{
+  countFigure = value;
+}
+
+int XOGame::getSize() const
+{
+  return _size;
 }
 
 XOGame::XOGame(WWidget *main)
 {
   _main = main;
+}
+
+void XOGame::checkGameOver()
+{
+  char rv = checkVictory();
+  if( rv == _aiPlayer ){
+    std::cout << "win: _aiPlayer"  << std::endl;
+    WMessageBox::information(nullptr, L"Game Over", L"You Loos =(");
+    startNewGame(_size);
+    return;
+  }else if ( rv == _huPlayer ) {
+    std::cout << "win: _huPlayer"  << std::endl;
+    WMessageBox::information(nullptr, L"Win", L"You Winner ;)");
+    startNewGame(_size);
+    return;
+  }else if( rv == -1){
+    std::cout << "win: _"  << std::endl;
+    WMessageBox::information(nullptr, L"Game Over", L"Tie, you can better...");
+    return;
+  }
 }
 
 void XOGame::setPos(const WPoint &point)
@@ -136,14 +193,23 @@ bool XOGame::setTile(int i, int j, char tile)
   return false;
 }
 
+WRect XOGame::geometry()
+{
+  if( _map ){
+    return WRect( _map[0][0].btn->geometry().left(),
+        _map[0][0].btn->geometry().top(),
+        _map[_size - 1][_size - 1].btn->geometry().right(),
+        _map[_size - 1][_size - 1].btn->geometry().bottom()
+        );
+  }
+  return WRect( 0, 0, _tileSize*_size + _pos.x(), _tileSize*_size + _pos.y() );
+}
+
 char XOGame::checkVictory()
 {
-  static unsigned long long cnt = 0;
-//  std::cout << "count:"  << ++cnt << std::endl;
   bool victory;
   char c;
 
-  //*
   // rows
   for (int y = 0; y < _size; ++y) {
     c = _map[0][y].symbol;
@@ -155,13 +221,12 @@ char XOGame::checkVictory()
           break;
         }
       }
-      if ( victory ) return c;
+      if ( victory ) {
+        return c;
+      }
     }
   }
-  //*/
-//  std::cout << "No win rows" << std::endl;
 
-  //*
   // columns
   for (int x = 0; x < _size; ++x) {
     c = _map[x][0].symbol;
@@ -173,13 +238,12 @@ char XOGame::checkVictory()
           break;
         }
       }
-      if ( victory ) return c;
+      if ( victory ) {
+        return c;
+      }
     }
   }
-  //*/
-//  std::cout << "No win cols" << std::endl;
 
-  //*
   // main axis
   c = _map[0][0].symbol;
   if ( c != _ ) {
@@ -190,12 +254,11 @@ char XOGame::checkVictory()
         break;
       }
     }
-    if ( victory ) return c;
+    if ( victory ) {
+      return c;
+    }
   }
-  //*/
-//  std::cout << "No win main" << std::endl;
 
-  //*
   // add axis
   c = _map[_size - 1][0].symbol;
   if ( c != _ ) {
@@ -206,23 +269,21 @@ char XOGame::checkVictory()
         break;
       }
     }
-    if ( victory ) return c;
+    if ( victory ) {
+      return c;
+    }
   }
-  //*/
-//  std::cout << "No win addl" << std::endl;
 
-  //*
   for (int i = 0; i < _size; ++i) {
     for (int j = 0; j < _size; ++j) {
       if( _map[i][j].symbol == _ )
         return _;
     }
   }
-  //*/
-//  std::cout << "No accesible turns" << std::endl;
 
   return -1;
 }
+
 
 
 void XOGame::deleteMap()
@@ -249,7 +310,10 @@ void XOGame::createMap()
     for (int j = 0; j < _size; ++j) {
       _map[i][j].btn = new WPushButton(_main);
       _map[i][j].btn->on_clicked([=](WMouseEvent*,bool){
+        char rv = checkVictory();
         this->setTile(i, j, X);
+
+        std::cout << "win: " << rv << std::endl;
         for(int i = 0; i < _size; i++){
           for(int j = 0; j < _size; j++){
             std::cout << "[" << _map[i][j].symbol << "]";

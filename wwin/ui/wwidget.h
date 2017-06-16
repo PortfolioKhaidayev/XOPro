@@ -1,14 +1,14 @@
 #ifndef WWIDGET_H
 #define WWIDGET_H
 
-#include "wwin/wobject.h"
-#include "wwin/wstring.h"
+#include "../wstring.h"
+#include "../wobject.h"
+#include "../wmouseevent.h"
+#include "../wresizeevent.h"
+#include "../wmoveevent.h"
 
-#include "wwin/wmouseevent.h"
-#include "wwin/wresizeevent.h"
-#include "wwin/wmoveevent.h"
-#include <wpaintdevice.h>
-#include <wpaintevent.h>
+#include "../wpaintdevice.h"
+#include "../wpaintevent.h"
 /**
  * @brief WWidgetState перечисление с состояниями окна виджета
  */
@@ -126,6 +126,8 @@ public:
     WORD cid() const;
     void hwnd(HWND hwnd);
     void show();
+    void hide();
+    void exit();
 
     void geometry(int* x, int* y, int* width, int* height) const;
     WRect geometry() const;

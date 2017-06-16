@@ -1,8 +1,8 @@
 #ifndef WRECT_H
 #define WRECT_H
 
-#include "wwin/wpoint.h"
-#include "wwin/wsize.h"
+#include "wpoint.h"
+#include "wsize.h"
 
 class WRect
 {

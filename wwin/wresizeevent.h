@@ -1,8 +1,8 @@
 #ifndef WRESIZEEVENT_H
 #define WRESIZEEVENT_H
 
-#include "wwin/wevent.h"
-#include "wwin/wsize.h"
+#include "wevent.h"
+#include "wsize.h"
 
 class WResizeEvent : public WEvent
 {

@@ -1,5 +1,5 @@
 #include "wapplication.h"
-#include "wwin/wevent.h"
+#include "wevent.h"
 
 #include <iostream>
 

@@ -3,8 +3,8 @@
 
 #include <windows.h>
 #include <map>
-#include "wwin/ui/wwidget.h"
-#include "wwin/wstring.h"
+#include "ui/wwidget.h"
+#include "wstring.h"
 
 #define wApp WApplication::instance()
 typedef std::map<WORD,WObject*> WComponentsMap;

@@ -47,13 +47,13 @@ void WMessageBox::information(WWidget *parent, WString title, WString message)
  * @param title - заголовок окна
  * @param message - текст сообщения
  */
-void WMessageBox::question(WWidget *parent, WString title, WString message)
+bool WMessageBox::question(WWidget *parent, WString title, WString message)
 {
     HWND hwnd = nullptr;
     if(parent){
         parent->hwnd();
     }
-    MessageBox(hwnd, message.c_str(), title.c_str(), MB_OK | MB_ICONQUESTION);
+    return MessageBox(hwnd, message.c_str(), title.c_str(), MB_OK | MB_ICONQUESTION);
 }
 
 /**

@@ -1,5 +1,4 @@
 #include "xowindow.h"
-#include "xofield.h"
 #include "wellipse.h"
 #include "wrectangle.h"
 #include "xogame.h"
@@ -10,6 +9,16 @@
 
 #include <iostream>
 
+/// \bref
+std::vector<WWidget> XOWindow::ui() const
+{
+  return _ui;
+}
+
+void XOWindow::setUi(const std::vector<WWidget> &ui)
+{
+  _ui = ui;
+}
 
 XOWindow::XOWindow(WWidget *parent)
   :WWidget(parent)
@@ -25,7 +34,7 @@ XOWindow::~XOWindow()
 void XOWindow::initUi()
 {
   auto wgt = this;
-  int width  = 920;
+  int width  = 400;
   int height = 570;
   int x = WScreen::width()  / 2 - width  / 2;
   int y = WScreen::height() / 2 - height / 2;
@@ -33,34 +42,12 @@ void XOWindow::initUi()
   wgt->setTitle(L"XOPro");
   wgt->setGeometry(x, y, width, height);// piece
 
-
-
-
   WSpinBox* sbSize = new WSpinBox(this);
-  sbSize->setGeometry(10, 10, 340, 30);
-  sbSize->setMaximum(32);
+  sbSize->setGeometry( 10, 10, 340, 30);
+  sbSize->setMaximum(10);
   sbSize->setMinimum(3);
   sbSize->setValue(3);
   sbSize->show();
-
-  WButtonGroup *difficultyButtons = new WButtonGroup(this);
-
-  WRadioButton *rbtnEasy   = new WRadioButton(this);
-  rbtnEasy->setGeometry(10, 40, 340, 30);
-  rbtnEasy->setTitle(L"Easy");
-  rbtnEasy->show();
-  WRadioButton *rbtnNormal = new WRadioButton(this);
-  rbtnNormal->setGeometry(10, 80, 340, 30);
-  rbtnNormal->setTitle(L"Normal");
-  rbtnNormal->show();
-  WRadioButton *rbtnHard   = new WRadioButton(this);
-  rbtnHard->setGeometry(10, 120, 340, 30);
-  rbtnHard->setTitle(L"Hard");
-  rbtnHard->show();
-
-  difficultyButtons->addButton(rbtnEasy);
-  difficultyButtons->addButton(rbtnNormal);
-  difficultyButtons->addButton(rbtnHard);
 
   WPushButton* btnStart = new WPushButton(this);
   btnStart->setGeometry(10, 160, 340, 30);
@@ -71,28 +58,58 @@ void XOWindow::initUi()
   btnExit->setTitle(L"Exit");
   btnExit->show();
 
+  wgt->setGeometry(x, y,
+                   btnExit->geometry().right()+30,
+                   btnExit->geometry().bottom()+50
+                   );
+
   auto *fld = new XOGame(this);
-  fld->setPos( WPoint( 360, 10) );
+  fld->setPos( WPoint( 10, sbSize->geometry().bottom() + 10) );
+//  fld->setPos( WPoint( btnExit->geometry().right() / 3, sbSize->geometry().bottom() + 10) );
+  fld->startNewGame( fld->getSize() );
+
+
   btnStart->on_clicked([=](WMouseEvent*,bool){
     int sz = sbSize->value();
     fld->startNewGame( sz );
+
+    fld->setPos( WPoint( width / 2 - (fld->geometry().right())/2, sbSize->geometry().bottom() + 10) );
+    btnStart->setGeometry( 10, fld->geometry().bottom(), 340, 30);
+    btnExit->setGeometry( 10, btnStart->geometry().bottom()+16, 340, 30);
+
+    wgt->setGeometry(x, y,
+                     btnExit->geometry().right()+30,
+                     btnExit->geometry().bottom()+50
+                     );
+
+//    this->hideUi();
   });
 
+  btnExit->on_clicked([=](WMouseEvent*, bool){
+    wgt->exit();
+  });
+
+  _ui.push_back( sbSize );
+  _ui.push_back( btnStart );
+  _ui.push_back( btnExit );
+}
+
+void XOWindow::hideUi()
+{
+  for(WWidget comp : _ui){
+    comp.hide();
+  }
+}
+
+void XOWindow::showUi()
+{
+  for(auto comp : _ui){
+    comp.show();
+  }
 }
 
 bool XOWindow::paintEvent(WPaintEvent *e)
 {
-
-  WEllipse el( WPoint( 150, 150), 150 );
-
-  WRectangle rg(WPoint( 360, 10), WSize(300, 300), WPivotPointPosition::LeftTop );
-
-  WPainter* painter = new WPainter( this );
-
-  painter->begin();
-
-//  painter->drawShape( rg );
-//  painter->drawRect(360, 10, 300, 300);
-
-  painter->end();
+  return e->isAccepted();
 }
+

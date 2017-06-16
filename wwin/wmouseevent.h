@@ -1,7 +1,7 @@
 #ifndef WMOUSEEVENT_H
 #define WMOUSEEVENT_H
 
-#include "wwin/wevent.h"
+#include "wevent.h"
 
 /**
  * @brief WMouseEvent Класс события с информацией о клике мыши.

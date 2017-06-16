@@ -1,8 +1,8 @@
 #ifndef WPAINTEVENT_H
 #define WPAINTEVENT_H
 
-#include "wwin/wevent.h"
-#include "wwin/wrect.h"
+#include "wevent.h"
+#include "wrect.h"
 
 class WPaintEvent : public WEvent
 {

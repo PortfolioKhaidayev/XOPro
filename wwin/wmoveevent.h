@@ -1,8 +1,8 @@
 #ifndef WMOVEEVENT_H
 #define WMOVEEVENT_H
 
-#include "wwin/wevent.h"
-#include "wwin/wpoint.h"
+#include "wevent.h"
+#include "wpoint.h"
 
 /*!
  * \brief WMoveEvent класс собтия перемещения

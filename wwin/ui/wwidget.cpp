@@ -221,6 +221,17 @@ void WWidget::show()
     UpdateWindow( this->hwnd() );
 }
 
+void WWidget::hide()
+{
+  ShowWindow( this->hwnd(), SW_HIDE );
+}
+
+void WWidget::exit()
+{
+//  SendMessageA(this->hide(), (UINT)WM_DESTROY, (WPARAM)NULL, (LPARAM)NULL);
+  ExitProcess(0);
+}
+
 void WWidget::geometry(int *x, int *y, int *width, int *height) const
 {
     if(!x || !y || !width || !height) return;

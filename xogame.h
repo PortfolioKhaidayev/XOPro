@@ -22,10 +22,10 @@ struct AiMove{
   int _score = 0;
 };
 
-class XOGame
+class XOGame : public WWidget
 {
 private:
-
+  static int countFigure;
   char _aiPlayer = O;
   char _huPlayer = X;
 
@@ -38,27 +38,35 @@ private:
 public:
   XOGame( WWidget* main = nullptr );
 
+  void checkGameOver();
   void setPos(const WPoint& point);
   void setMainWindow(WWidget* main = nullptr);
 
   void startNewGame(int size);
 
   bool setTile(int i, int j, char tile);
+  WRect geometry();
 
-  char checkVictory();
-
+  char checkVictory();  
 
   MapItem **map() const;
+
+  static int getCountFigure();
+  static int incrementCountFigure();
+
+  static void setCountFigure(int value);
+
+  int getSize() const;
 
 private:
 
   void initAi(char aiPlayer = O);
-  AiMove getBestMove(char currentPlayer = O);
+  AiMove getBestMove(char currentPlayer = O, int depth = 0);
   void run_minimax();
 
   void deleteMap();
   void createMap();
-  void eraseMap(char def = ' ');
+  void eraseMap();
 
 };
 

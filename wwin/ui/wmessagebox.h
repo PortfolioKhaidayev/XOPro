@@ -13,7 +13,7 @@ public:
     WMessageBox(WWidget *parent = nullptr);
     static void critical(WWidget* parent, WString title, WString message);
     static void information(WWidget* parent, WString title, WString message);
-    static void question(WWidget* parent, WString title, WString message);
+    static bool question(WWidget* parent, WString title, WString message);
     static void warning(WWidget* parent, WString title, WString message);
 };
 
