@@ -98,8 +98,6 @@ void XOGame::run_minimax()
 
   AiMove move = getBestMove(_aiPlayer, 3);
   this->setTile( move._x, move._y, _aiPlayer);
-
-  checkGameOver();
 }
 
 void XOGame::eraseMap()
@@ -134,6 +132,16 @@ void XOGame::setCountFigure(int value)
 int XOGame::getSize() const
 {
   return _size;
+}
+
+int XOGame::getMode() const
+{
+  return _mode;
+}
+
+void XOGame::setMode(int mode)
+{
+  _mode = mode;
 }
 
 XOGame::XOGame(WWidget *main)
@@ -296,6 +304,8 @@ void XOGame::deleteMap()
   }
   delete[] _map;
   _map = nullptr;
+
+  XOGame::countFigure = 0;
 }
 
 void XOGame::createMap()
@@ -311,7 +321,15 @@ void XOGame::createMap()
       _map[i][j].btn = new WPushButton(_main);
       _map[i][j].btn->on_clicked([=](WMouseEvent*,bool){
         char rv = checkVictory();
-        this->setTile(i, j, X);
+        char currentFigure = _huPlayer;
+
+        if( ( countFigure % 2 ) == 0){
+          currentFigure = _huPlayer;
+        } else {
+          currentFigure = _aiPlayer;
+        }
+
+        this->setTile(i, j, currentFigure);
 
         std::cout << "win: " << rv << std::endl;
         for(int i = 0; i < _size; i++){
@@ -320,7 +338,11 @@ void XOGame::createMap()
           }
           std::cout << std::endl;
         }
-        this->run_minimax();
+        if( this->_mode == GameMode::OnePalyer ){
+          this->run_minimax();
+        }
+        countFigure++;
+        checkGameOver();
       });
       _map[i][j].btn->setGeometry(i*_tileSize + _pos.x(), j*_tileSize + _pos.y(), _tileSize,_tileSize);
       _map[i][j].btn->show();

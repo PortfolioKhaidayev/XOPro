@@ -8,6 +8,12 @@ enum PlayerType{
   O = 'O',
   _ = ' ',
 };
+namespace GameMode {
+  enum {
+    OnePalyer,
+    TwoPlayers,
+  };
+}
 
 typedef struct {
   WPushButton* btn;
@@ -24,13 +30,14 @@ struct AiMove{
 
 class XOGame : public WWidget
 {
-private:
+private:  
   static int countFigure;
   char _aiPlayer = O;
   char _huPlayer = X;
 
   int _size = 3;
   int _tileSize = 32;
+  int _mode = GameMode::OnePalyer;
   WPoint _pos;
   WWidget* _main;
   MapItem** _map = nullptr;
@@ -58,9 +65,12 @@ public:
 
   int getSize() const;
 
+  int getMode() const;
+  void setMode(int mode = GameMode::OnePalyer);
+  void initAi(char aiPlayer = O);
+
 private:
 
-  void initAi(char aiPlayer = O);
   AiMove getBestMove(char currentPlayer = O, int depth = 0);
   void run_minimax();
 
