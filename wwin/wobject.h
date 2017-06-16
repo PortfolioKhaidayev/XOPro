@@ -2,15 +2,16 @@
 #define WOBJECT_H
 
 #include <windows.h>
-#include "wwin/wstring.h"
+#include "wstring.h"
 #include <list>
 
-#include "wwin/wevent.h"
+#include "wevent.h"
 
 namespace WObjectType {
     enum WObjectType{
         Object,
-        Widget
+        Widget,
+        Shape
     };
 }
 

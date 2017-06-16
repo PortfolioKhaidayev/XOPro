@@ -1,5 +1,5 @@
 #include "wapplication.h"
-#include "wwin/wevent.h"
+#include "wevent.h"
 
 #include <iostream>
 
@@ -10,7 +10,7 @@ WApplication* WApplication::_appInstance = nullptr;
  */
 WApplication::WApplication(int &, char **)
 {
-    init();
+  init();
 }
 
 /**
@@ -22,12 +22,12 @@ WApplication::WApplication(int &, char **)
  */
 WApplication::WApplication(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    _hInstance = hInstance;
-    _hPrevInstance = hPrevInstance;
-    _lpCmdLine = lpCmdLine;
-    _nCmdShow = nCmdShow;
+  _hInstance = hInstance;
+  _hPrevInstance = hPrevInstance;
+  _lpCmdLine = lpCmdLine;
+  _nCmdShow = nCmdShow;
 
-    init();
+  init();
 }
 
 /**
@@ -42,11 +42,11 @@ WApplication::WApplication(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR l
  */
 WApplication* WApplication::instance(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    if( ! _appInstance ) {
-        _appInstance = new WApplication(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-        return _appInstance;
-    }
+  if( ! _appInstance ) {
+    _appInstance = new WApplication(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
     return _appInstance;
+  }
+  return _appInstance;
 }
 
 /**
@@ -57,7 +57,7 @@ WApplication* WApplication::instance(HINSTANCE hInstance, HINSTANCE hPrevInstanc
  */
 WApplication* WApplication::instance()
 {
-    return _appInstance;
+  return _appInstance;
 }
 
 /**
@@ -68,7 +68,13 @@ WApplication* WApplication::instance()
  */
 void WApplication::addComponent(WWidget *object)
 {
-    (this->_objects[object->parentHwnd()])[object->cid()] = object;
+  HWND hwnd = nullptr;
+  if( object->parentHwnd() == nullptr ){
+    hwnd = object->hwnd();
+  } else {
+    hwnd = object->parentHwnd();
+  }
+  (this->_objects[hwnd])[object->cid()] = object;
 }
 
 /**
@@ -78,7 +84,13 @@ void WApplication::addComponent(WWidget *object)
  */
 void WApplication::removeComponent(const WWidget* object)
 {
-    (_objects[object->parentHwnd()]).erase(object->cid());
+  HWND hwnd = nullptr;
+  if( object->parentHwnd() == nullptr ){
+    hwnd = object->hwnd();
+  } else {
+    hwnd = object->parentHwnd();
+  }
+  (_objects[hwnd]).erase(object->cid());
 }
 
 /**
@@ -87,7 +99,7 @@ void WApplication::removeComponent(const WWidget* object)
  */
 HINSTANCE WApplication::getHinstance()
 {
-    return _hInstance;
+  return _hInstance;
 }
 
 /**
@@ -97,14 +109,14 @@ HINSTANCE WApplication::getHinstance()
  */
 int WApplication::run()
 {
-    MSG msg;
+  MSG msg;
 
-    while( GetMessage( &msg, NULL, 0, 0 ) ){
-        TranslateMessage( &msg );
-        DispatchMessage( &msg );
-    }
+  while( GetMessage( &msg, NULL, 0, 0 ) ){
+    TranslateMessage( &msg );
+    DispatchMessage( &msg );
+  }
 
-    return msg.wParam;
+  return msg.wParam;
 }
 
 /**
@@ -113,41 +125,41 @@ int WApplication::run()
  */
 WString WApplication::applicationName() const
 {
-    return _applicationName;
+  return _applicationName;
 }
 
 void WApplication::setApplicationName(WString applicationName)
 {
-    _applicationName = applicationName;
+  _applicationName = applicationName;
 }
 
 WString WApplication::userName() const
 {
-    return _userName;
+  return _userName;
 }
 
 WString WApplication::applicationVersion() const
 {
-    return _applicationVersion;
+  return _applicationVersion;
 }
 
 void WApplication::setApplicationVersion(const WString &applicationVersion)
 {
-    _applicationVersion = applicationVersion;
+  _applicationVersion = applicationVersion;
 }
 
 void WApplication::init()
 {
-    wchar_t buffer[255];
-    DWORD len = 255;
-    GetEnvironmentVariable(L"USERNAME", buffer, len);
-    _userName = WString(buffer);
+  wchar_t buffer[255];
+  DWORD len = 255;
+  GetEnvironmentVariable(L"USERNAME", buffer, len);
+  _userName = WString(buffer);
 
-    hideConsole();
-    if( ! this->registerClass() ){
-        return;
-    }
+  hideConsole();
+  if( ! this->registerClass() ){
     return;
+  }
+  return;
 }
 
 /**
@@ -156,20 +168,20 @@ void WApplication::init()
  */
 ATOM WApplication::registerClass()
 {
-    WNDCLASS wcl;
+  WNDCLASS wcl;
 
-    wcl.hInstance = _hInstance;
-    wcl.lpszClassName = L"WWIDGET";
-    wcl.lpfnWndProc = &WApplication::wndproc;
-    wcl.style = CS_VREDRAW | CS_HREDRAW;
-    wcl.hIcon = NULL;
-    wcl.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wcl.lpszMenuName = NULL;
-    wcl.cbClsExtra = 0;
-    wcl.cbWndExtra = 0;
-    wcl.hbrBackground = ( HBRUSH )COLOR_WINDOW;//( HBRUSH )GetStockObject( COLOR_GRAYTEXT );
+  wcl.hInstance = _hInstance;
+  wcl.lpszClassName = L"WWIDGET";
+  wcl.lpfnWndProc = &WApplication::wndproc;
+  wcl.style = CS_VREDRAW | CS_HREDRAW;
+  wcl.hIcon = NULL;
+  wcl.hCursor = LoadCursor(nullptr, IDC_ARROW);
+  wcl.lpszMenuName = NULL;
+  wcl.cbClsExtra = 0;
+  wcl.cbWndExtra = 0;
+  wcl.hbrBackground = ( HBRUSH )COLOR_WINDOW;//( HBRUSH )GetStockObject( COLOR_GRAYTEXT );
 
-    return RegisterClass( &wcl );
+  return RegisterClass( &wcl );
 }
 
 /**
@@ -178,15 +190,15 @@ ATOM WApplication::registerClass()
  */
 void WApplication::hideConsole()
 {
-    //*
-    const LPCWSTR consoleName = L"WWIN-HIDE-5648-45748-DFJHV-SDAYUF-SNVNS";
-    SetConsoleTitle(consoleName);
-    HWND console = FindWindow(NULL, consoleName);
-    if(console == 0) {
-        /// \todo handle errors
-    }
-    ShowWindow(console, SW_HIDE);
-    // */
+  //*
+  const LPCWSTR consoleName = L"WWIN-HIDE-5648-45748-DFJHV-SDAYUF-SNVNS";
+  SetConsoleTitle(consoleName);
+  HWND console = FindWindow(NULL, consoleName);
+  if(console == 0) {
+    /// \todo handle errors
+  }
+  ShowWindow(console, SW_HIDE);
+  // */
 }
 
 /**
@@ -200,29 +212,50 @@ void WApplication::hideConsole()
  */
 LRESULT WApplication::wndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    WORD cid = LOWORD(wParam);
-    /*
+  WORD cid = LOWORD(wParam);
+  /*
     if( message == WM_LBUTTONDOWN ){
         cid = 5;
         SendMessage(hWnd, WM_COMMAND, BN_PUSHED | cid, 0);
         // CreateWindowEx()
     }
     //*/
-    WObject* component = wApp->component(hWnd, cid);
+  WObject* component = wApp->component(hWnd, cid);
 
-    if( message == WM_DESTROY ){
-        PostQuitMessage( EXIT_SUCCESS );
-    }
+  if( message == WM_DESTROY ){
+    PostQuitMessage( EXIT_SUCCESS );
+  }
 
-    bool accept = false;
-    if( component ) {
-        accept = component->nativeEvent(hWnd, message, wParam, lParam);
-    }
+  bool accept = false;
+  if( component ) {
+    accept = component->nativeEvent(hWnd, message, wParam, lParam);
 
-    if( ! accept ){
-        return DefWindowProc( hWnd, message, wParam, lParam );
+    if(WM_PAINT == message || WM_CREATE == message){
+      for( auto child_component : wApp->components(hWnd) ){
+        if( child_component.second && child_component.second->type() == WObjectType::Widget ){
+          WWidget *wgt = reinterpret_cast<WWidget*>(child_component.second);
+          wgt->nativeEvent(wgt->hwnd(), message, wParam, lParam);
+        }
+      }
     }
-    return wParam;
+    if(WM_LBUTTONUP == message || WM_LBUTTONDOWN == message){
+
+      std::cout << "Wgt: WM_LBUTTONUP || WM_LBUTTONDOWN " << std::endl;
+
+      for( auto child_component : wApp->components(hWnd) ){
+        if( child_component.second && child_component.second->type() == WObjectType::Widget ){
+          WWidget *wgt = reinterpret_cast<WWidget*>(child_component.second);
+          WMouseEvent *mevt = new WMouseEvent;
+          if( wgt->geometry().contains( mevt->x(), mevt->y() ) )
+            wgt->nativeEvent(wgt->hwnd(), message, wParam, lParam);
+        }
+      }
+    }
+  }
+  if( ! accept ){
+    return DefWindowProc( hWnd, message, wParam, lParam );
+  }
+  return wParam;
 }
 
 /**
@@ -232,7 +265,7 @@ LRESULT WApplication::wndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
  */
 WComponentsMap &WApplication::components(HWND hwnd)
 {
-    return _objects[hwnd];
+  return _objects[hwnd];
 }
 
 /**
@@ -243,5 +276,5 @@ WComponentsMap &WApplication::components(HWND hwnd)
  */
 WObject *WApplication::component(HWND hwnd, WORD cid)
 {
-    return _objects[hwnd][cid];
+  return _objects[hwnd][cid];
 }
