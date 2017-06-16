@@ -1,10 +1,8 @@
 #include "xowindow.h"
-#include "wellipse.h"
-#include "wrectangle.h"
 #include "xogame.h"
 
 #include <WGui>
-#include <wpainter.h>
+//#include <WPainter>
 
 
 #include <iostream>

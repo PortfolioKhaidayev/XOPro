@@ -10,7 +10,7 @@ MODULES += ui
 LIBS += -lgdi32 # Пока нигде, но понадобится для картинок
 LIBS += -lcomctl32 # Некоторые виджеты типа WSpinBox
 
-INCLUDEPATH += wwin wwin/ui
+INCLUDEPATH += wwin/include
 
 contains( LIBS, -lgdi32 ) {
     DEFINES += WWIN_GDI
@@ -62,23 +62,6 @@ contains( MODULES, ui ){
 }
 
 HEADERS += \
-#        wwin/ui/wwidget.h \
-#        wwin/ui/wscreen.h \
-#        wwin/ui/wpushbutton.h \
-#        wwin/ui/wmessagebox.h \
-#        wwin/ui/wabstractitemmodel.h \
-#        wwin/ui/wlineedit.h \
-#        wwin/ui/wlistbox.h \
-#        wwin/ui/wlistview.h \
-#        wwin/ui/wabstractitemview.h \
-#        wwin/ui/wabstractbutton.h \
-#        wwin/ui/wcheckbox.h \
-#        wwin/ui/wradiobutton.h \
-#        wwin/ui/wbuttongroup.h \
-#        wwin/ui/wplaintextedit.h \
-#        wwin/ui/wprogressbar.h \
-#        wwin/ui/wlabel.h \
-#################
     wwin/wapplication.h \
     wwin/wobject.h \
     wwin/helpers/winapiwindowbuilder.h \
@@ -98,32 +81,13 @@ HEADERS += \
     wwin/wpainter.h \
     wwin/wpaintevent.h \
     wwin/wrect.h \
-############################
     wwin/wellipse.h \
     wwin/wrectangle.h \
     wwin/wshape.h \
-###########################
     xowindow.h \
     xogame.h
 
 SOURCES += main.cpp\
-#        wwin/ui/wwidget.cpp \
-#        wwin/ui/wscreen.cpp \
-#        wwin/ui/wpushbutton.cpp \
-#        wwin/ui/wmessagebox.cpp \
-#        wwin/ui/wabstractitemmodel.cpp \
-#        wwin/ui/wlineedit.cpp \
-#        wwin/ui/wlistbox.cpp \
-#        wwin/ui/wlistview.cpp \
-#        wwin/ui/wabstractitemview.cpp \
-#        wwin/ui/wabstractbutton.cpp \
-#        wwin/ui/wcheckbox.cpp \
-#        wwin/ui/wradiobutton.cpp \
-#        wwin/ui/wbuttongroup.cpp \
-#        wwin/ui/wplaintextedit.cpp \
-#        wwin/ui/wprogressbar.cpp \
-#        wwin/ui/wlabel.cpp \
-#####################
     wwin/wapplication.cpp \
     wwin/wobject.cpp \
     wwin/helpers/winapiwindowbuilder.cpp \
@@ -143,10 +107,8 @@ SOURCES += main.cpp\
     wwin/wpainter.cpp \
     wwin/wpaintevent.cpp \
     wwin/wrect.cpp \
-#####################################
     wwin/wellipse.cpp \
     wwin/wrectangle.cpp \
     wwin/wshape.cpp \
-###############################
     xowindow.cpp \
     xogame.cpp

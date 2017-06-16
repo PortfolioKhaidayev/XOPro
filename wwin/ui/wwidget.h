@@ -1,14 +1,14 @@
 #ifndef WWIDGET_H
 #define WWIDGET_H
 
-#include "../wstring.h"
-#include "../wobject.h"
-#include "../wmouseevent.h"
-#include "../wresizeevent.h"
-#include "../wmoveevent.h"
+#include "wwin/wobject.h"
+#include "wwin/wstring.h"
 
-#include "../wpaintdevice.h"
-#include "../wpaintevent.h"
+#include "wwin/wmouseevent.h"
+#include "wwin/wresizeevent.h"
+#include "wwin/wmoveevent.h"
+#include "wwin/wpaintdevice.h"
+#include "wwin/wpaintevent.h"
 /**
  * @brief WWidgetState перечисление с состояниями окна виджета
  */
