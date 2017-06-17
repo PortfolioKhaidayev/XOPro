@@ -3,6 +3,7 @@
 
 #include <WGui>
 #include <iostream>
+#include <string>
 
 /// \bref
 std::vector<WWidget> XOWindow::ui() const
@@ -114,6 +115,8 @@ void XOWindow::initUi()
                      );
   });
 
+//  wchar_t bufX[64];
+//  wchar_t bufO[64];
   btnExit->on_clicked([=](WMouseEvent*, bool){
     wgt->exit();
   });
@@ -122,6 +125,25 @@ void XOWindow::initUi()
 //  fld->setPos( WPoint( btnExit->geometry().right() / 3, sbSize->geometry().bottom() + 10) );
   fld->startNewGame( fld->getSize() );
 
+//  itoa(fld->getCountWinX(), bufX, 10);
+//  itoa(fld->getCountWinX(), bufO, 10);
+
+
+
+  WLabel *_lCountWinX;
+  WLabel *_lCountWinO;
+  WLabel *_lCountNotWhose;
+  _lCountWinX = new WLabel(wgt);
+  _lCountWinX->setGeometry( fld->geometry().topRight().x(), fld->geometry().top(), 64, 30 );
+  _lCountWinX->setTitle( L"X: " + std::to_wstring(fld->getCountWinX()) );
+
+  _lCountWinO = new WLabel(wgt);
+  _lCountWinO->setGeometry( fld->geometry().topRight().x(), _lCountWinX->geometry().bottom() + 10, 64, 30 );
+  _lCountWinO->setTitle( L"O: " + std::to_wstring( fld->getCountWinO() ));
+
+  _lCountNotWhose = new WLabel(wgt);
+  _lCountNotWhose->setGeometry( fld->geometry().topRight().x(), _lCountWinO->geometry().bottom() + 10, 128, 30 );
+  _lCountNotWhose->setTitle( L"Not Whose: " + std::to_wstring( fld->getCountNotWhose() ) );
 
   btnStart->click();
   _ui.push_back( sbSize );

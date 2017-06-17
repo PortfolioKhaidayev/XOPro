@@ -1,6 +1,7 @@
 #ifndef XOGAME_H
 #define XOGAME_H
 
+#include <WLabel>
 #include <WPushButton>
 
 enum PlayerType{
@@ -42,6 +43,16 @@ private:
   WWidget* _main;
   MapItem** _map = nullptr;
 
+  int _countWinX = 0;
+  int _countWinO = 0;
+  int _countNotWhose = 0;
+
+  char _currentFigure = _huPlayer;
+
+
+  WLabel *_lCountWinX;
+  WLabel *_lCountWinO;
+  WLabel *_lCountNotWhose;
 public:
   XOGame( WWidget* main = nullptr );
 
@@ -68,6 +79,15 @@ public:
   int getMode() const;
   void setMode(int mode = GameMode::OnePalyer);
   void initAi(char aiPlayer = O);
+
+  int getCountWinO() const;
+  void setCountWinO(int value);
+
+  int getCountWinX() const;
+  void setCountWinX(int value);
+
+  int getCountNotWhose() const;
+  void setCountNotWhose(int value);
 
 private:
 

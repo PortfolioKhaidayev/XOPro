@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include <WLabel>
+
 class XOWindow : public WWidget
 {
 private:
@@ -12,6 +14,7 @@ private:
 public:
   XOWindow(WWidget *parent = nullptr);
   ~XOWindow();
+
 
   void initUi();
 

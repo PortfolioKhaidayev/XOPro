@@ -75,9 +75,11 @@ private:
     int _cid = 0; /// < ID компонента
     static int _componentCount; /// < Количество компонентов в системе
 
-    WWidget *parentWidget() const;
+
 
 protected:
+    WWidget *parentWidget() const;
+
     WString _className = L"WWIDGET"; /// < Название класса окна
     WString _title; /// < Заголовок окна
 
