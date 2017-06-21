@@ -106,7 +106,7 @@ void XOWindow::initUi()
     fld->startNewGame( sz );
 
 //    fld->setPos( WPoint( width / 2 - (fld->geometry().right())/2, sbSize->geometry().bottom() + 10) );
-    btnStart->setGeometry( 10, fld->geometry().bottom(), 340, 30);
+    btnStart->setGeometry( 10, fld->geometry().bottom() - 100, 340, 30);
     btnExit->setGeometry( 10, btnStart->geometry().bottom()+16, 340, 30);
 
     wgt->setGeometry(x, y,
@@ -130,20 +130,20 @@ void XOWindow::initUi()
 
 
 
-  WLabel *_lCountWinX;
-  WLabel *_lCountWinO;
-  WLabel *_lCountNotWhose;
-  _lCountWinX = new WLabel(wgt);
-  _lCountWinX->setGeometry( fld->geometry().topRight().x(), fld->geometry().top(), 64, 30 );
-  _lCountWinX->setTitle( L"X: " + std::to_wstring(fld->getCountWinX()) );
+//  WLabel *_lCountWinX;
+//  WLabel *_lCountWinO;
+//  WLabel *_lCountNotWhose;
+//  _lCountWinX = new WLabel(wgt);
+//  _lCountWinX->setGeometry( fld->geometry().topRight().x(), fld->geometry().top(), 64, 30 );
+//  _lCountWinX->setTitle( L"X: " + std::to_wstring(fld->getCountWinX()) );
 
-  _lCountWinO = new WLabel(wgt);
-  _lCountWinO->setGeometry( fld->geometry().topRight().x(), _lCountWinX->geometry().bottom() + 10, 64, 30 );
-  _lCountWinO->setTitle( L"O: " + std::to_wstring( fld->getCountWinO() ));
+//  _lCountWinO = new WLabel(wgt);
+//  _lCountWinO->setGeometry( fld->geometry().topRight().x(), _lCountWinX->geometry().bottom() + 10, 64, 30 );
+//  _lCountWinO->setTitle( L"O: " + std::to_wstring( fld->getCountWinO() ));
 
-  _lCountNotWhose = new WLabel(wgt);
-  _lCountNotWhose->setGeometry( fld->geometry().topRight().x(), _lCountWinO->geometry().bottom() + 10, 128, 30 );
-  _lCountNotWhose->setTitle( L"Not Whose: " + std::to_wstring( fld->getCountNotWhose() ) );
+//  _lCountNotWhose = new WLabel(wgt);
+//  _lCountNotWhose->setGeometry( fld->geometry().topRight().x(), _lCountWinO->geometry().bottom() + 10, 128, 30 );
+//  _lCountNotWhose->setTitle( L"Not Whose: " + std::to_wstring( fld->getCountNotWhose() ) );
 
   btnStart->click();
   _ui.push_back( sbSize );

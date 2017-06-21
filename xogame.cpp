@@ -1,7 +1,16 @@
 #include "xogame.h"
 #include <vector>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
+
 #include <WMessageBox>
+
+int random(int from, int to)
+{
+  srand( time(NULL) % 2 );
+  return from + rand() % to;
+}
 
 int XOGame::countFigure = 0;
 
@@ -47,17 +56,19 @@ end
     return AiMove(0);
   }
 
-  if( depth <= 0 ){
-    if( rv == _aiPlayer ){
-      return AiMove(10);
-    }else if ( rv == _huPlayer ) {
-      return AiMove(-10);
-    }else if( rv == -1){
-      return AiMove(0);
-    }
-  }
-
   std::vector<AiMove> moves;
+
+  if( depth < 1 ){
+    if( moves.size() > 0 ){
+      return moves[ random( 0, moves.size() )];
+    }
+
+    AiMove move;
+    move._x = random( 0, _size);
+    move._y = random( 0, _size);
+
+    return move;
+  }
 
   for (int i = 0; i < _size; ++i) {
     for (int j = 0; j < _size; ++j) {
@@ -110,7 +121,10 @@ void XOGame::run_minimax()
 {
   checkGameOver();
 
-  AiMove move = getBestMove(_aiPlayer, 3);
+  AiMove move = getBestMove(_aiPlayer, (_size > 3)
+                                        ? _size
+                                        : _size * _size
+                            );
   this->setTile( move._x, move._y, _aiPlayer);
 }
 
@@ -190,6 +204,7 @@ void XOGame::setCountNotWhose(int value)
 }
 
 XOGame::XOGame(WWidget *main)
+ : WWidget(main)
 {
   _main = main;
 }
@@ -205,12 +220,13 @@ void XOGame::checkGameOver()
     if( _aiPlayer == O ){
       _countWinO++;
     }
-    std::cout << "X: " << _countWinX;
-    std::cout << "O: " << _countWinO;
-    std::cout << "Not: " << _countNotWhose;
+    std::cout << "X: " << _countWinX<< std::endl;
+    std::cout << "O: " << _countWinO<< std::endl;
+    std::cout << "Not: " << _countNotWhose<< std::endl;
 
     _lCountWinX->setTitle( L"X: " + std::to_wstring( _countWinX ) );
     _lCountWinO->setTitle( L"O: " + std::to_wstring( _countWinO ) );
+
     WMessageBox::information(nullptr, L"Game Over", L"You Loos =(");
     startNewGame(_size);
     return;
@@ -222,9 +238,9 @@ void XOGame::checkGameOver()
     if( _huPlayer == O ){
       _countWinO++;
     }
-    std::cout << "X: " << _countWinX;
-    std::cout << "O: " << _countWinO;
-    std::cout << "Not: " << _countNotWhose;
+    std::cout << "X: " << _countWinX << std::endl;
+    std::cout << "O: " << _countWinO << std::endl;
+    std::cout << "Not: " << _countNotWhose << std::endl;
 
     _lCountWinX->setTitle( L"X: " + std::to_wstring( _countWinX ) );
     _lCountWinO->setTitle( L"O: " + std::to_wstring( _countWinO ) );
@@ -236,13 +252,14 @@ void XOGame::checkGameOver()
     std::cout << "win: _"  << std::endl;
     _countNotWhose++;
 
-    std::cout << "X: " << _countWinX;
-    std::cout << "O: " << _countWinO;
-    std::cout << "Not: " << _countNotWhose;
+    std::cout << "X: " << _countWinX << std::endl;
+    std::cout << "O: " << _countWinO << std::endl;
+    std::cout << "Not: " << _countNotWhose << std::endl;
 
     _lCountNotWhose->setTitle( L"Not Whose: " + std::to_wstring( _countNotWhose ) );
-
+    _lCountNotWhose->show();
     WMessageBox::information(nullptr, L"Game Over", L"Tie, you can better...");
+    startNewGame(_size);
     return;
   }
 }
@@ -383,6 +400,10 @@ void XOGame::deleteMap()
   delete[] _map;
   _map = nullptr;
 
+  delete _lCountNotWhose;
+  delete _lCountWinO;
+  delete _lCountWinX;
+
   XOGame::countFigure = 0;
 }
 
@@ -430,16 +451,22 @@ void XOGame::createMap()
   }
 
 
-  _lCountWinX = new WLabel(this->parentWidget());
+  _lCountWinX = new WLabel(_main);
   _lCountWinX->setGeometry( this->geometry().topRight().x(), this->geometry().top(), 64, 30 );
-  _lCountWinX->setTitle( L"X: " + std::to_wstring(this->getCountWinX()) );
+  _lCountWinX->setTitle( L"X: " + std::to_wstring( _countWinX ) );
+  std::cout <<  "[createMap()]::_contWinX: " << _countWinX << std::endl;
+//  _lCountWinX->show();
 
-  _lCountWinO = new WLabel(this->parentWidget());
+  _lCountWinO = new WLabel(_main);
   _lCountWinO->setGeometry( this->geometry().topRight().x(), _lCountWinX->geometry().bottom() + 10, 64, 30 );
-  _lCountWinO->setTitle( L"O: " + std::to_wstring( this->getCountWinO() ));
+  _lCountWinO->setTitle( L"O: " + std::to_wstring( _countWinO ) );
+  std::cout <<  "[createMap()]::_contWinO: " << _countWinO << std::endl;
+//  _lCountWinO->show();
 
-  _lCountNotWhose = new WLabel(this->parentWidget());
+  _lCountNotWhose = new WLabel(_main);
   _lCountNotWhose->setGeometry( this->geometry().topRight().x(), _lCountWinO->geometry().bottom() + 10, 128, 30 );
-  _lCountNotWhose->setTitle( L"Not Whose: " + std::to_wstring( this->getCountNotWhose() ) );
+  _lCountNotWhose->setTitle( L"Not Whose: " + std::to_wstring( _countNotWhose ) );
+  std::cout <<  "[createMap()]::_countNotWhose: " << _countNotWhose << std::endl;
+  //  _lCountNotWhose->show();
 }
 
