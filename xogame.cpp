@@ -59,9 +59,9 @@ end
   std::vector<AiMove> moves;
 
   if( depth < 1 ){
-    if( moves.size() > 0 ){
-      return moves[ random( 0, moves.size() )];
-    }
+//    if( moves.size() > 0 ){
+//      return moves[ random( 0, moves.size() )];
+//    }
 
     AiMove move;
     move._x = random( 0, _size);
@@ -121,10 +121,7 @@ void XOGame::run_minimax()
 {
   checkGameOver();
 
-  AiMove move = getBestMove(_aiPlayer, (_size > 3)
-                                        ? _size
-                                        : _size * _size
-                            );
+  AiMove move = getBestMove(_aiPlayer, _size);
   this->setTile( move._x, move._y, _aiPlayer);
 }
 
@@ -419,30 +416,32 @@ void XOGame::createMap()
     for (int j = 0; j < _size; ++j) {
       _map[i][j].btn = new WPushButton(_main);
       _map[i][j].btn->on_clicked([=](WMouseEvent*,bool){
-        char rv = checkVictory();
-        _currentFigure = _huPlayer;
-
-        if( ( countFigure % 2 ) == 0){
+        if( _map[i][j].symbol == _ ){
+          char rv = checkVictory();
           _currentFigure = _huPlayer;
-        } else {
-          _currentFigure = _aiPlayer;
-        }
 
-        this->setTile(i, j, _currentFigure);
-
-        std::cout << "win: " << rv << std::endl;
-        for(int i = 0; i < _size; i++){
-          for(int j = 0; j < _size; j++){
-            std::cout << "[" << _map[i][j].symbol << "]";
+          if( ( countFigure % 2 ) == 0){
+            _currentFigure = _huPlayer;
+          } else {
+            _currentFigure = _aiPlayer;
           }
-          std::cout << std::endl;
-        }
-        if( this->_mode == GameMode::OnePalyer ){
-          this->run_minimax();
+
+          this->setTile(i, j, _currentFigure);
+
+          std::cout << "win: " << rv << std::endl;
+          for(int i = 0; i < _size; i++){
+            for(int j = 0; j < _size; j++){
+              std::cout << "[" << _map[i][j].symbol << "]";
+            }
+            std::cout << std::endl;
+          }
+          if( this->_mode == GameMode::OnePalyer ){
+            this->run_minimax();
+            countFigure++;
+          }
           countFigure++;
+          checkGameOver();
         }
-        countFigure++;
-        checkGameOver();
       });
       _map[i][j].btn->setGeometry(i*_tileSize + _pos.x(), j*_tileSize + _pos.y(), _tileSize,_tileSize);
       _map[i][j].btn->show();
